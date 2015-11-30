@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.List;
 
 import engine.controller.MainController;
+import engine.grid.GridController;
 import engine.particle.Particle;
 import engine.particle.ParticleController;
 import entity.Entity;
@@ -29,6 +30,7 @@ public class SpaceView extends GuiAbstract{
 	}
 	
 	public void update() {
+		System.out.println(yPosition);
 		updateMouse();
 		ParticleController.update();
 	}
@@ -63,6 +65,8 @@ public class SpaceView extends GuiAbstract{
 	public void moveX(int xAmount, int yAmount) {
 		xPosition += xAmount;
 		yPosition += yAmount;
+		System.out.println(xPosition);
+		System.out.println(yPosition);
 	}
 	
 	public void setStation (Station station) {
