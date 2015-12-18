@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.util.List;
 
 import engine.controller.MainController;
+import engine.grid.GridController;
 import engine.particle.Particle;
 import engine.particle.ParticleController;
 import entity.Entity;
@@ -26,6 +27,7 @@ public class SpaceView extends GuiAbstract{
 		
 		xPosition = 0;
 		yPosition = 0;
+
 	}
 	
 	public void update() {
@@ -39,33 +41,31 @@ public class SpaceView extends GuiAbstract{
 		
 		List<Entity> tempList = MainController.getFighterList();
 		for (int i = 0; i < tempList.size(); i++) {
-				tempList.get(i).render(g, xPosition, yPosition, xOrigin, yOrigin, squareSize);
+				tempList.get(i).render(g, xOrigin, yOrigin, xPosition, yPosition, squareSize);
 		}
 		
 		List<Particle> particleList = ParticleController.getParticles();
 		if (particleList != null){
 			for (int i = 0; i < particleList.size(); i++) {
-				if (particleList.get(i).getXPos() + xPosition > xOrigin &&
-						particleList.get(i).getXPos() + xPosition < xOrigin + squareSize &&
-						particleList.get(i).getYPos() + yPosition > yOrigin &&
-						particleList.get(i).getYPos() + yPosition < yOrigin + squareSize)
-					particleList.get(i).render(g, xPosition, yPosition);
+					particleList.get(i).render(g, xOrigin, yOrigin, xPosition, yPosition, squareSize);
 			}
 		}
 		
-		
-		
 		if (station != null)
-				station.render(g, xPosition, yPosition, xOrigin, yOrigin, squareSize);
-		
+				station.render(g, xOrigin, yOrigin, xPosition, yPosition, squareSize);
 	}
 
 	public void moveX(int xAmount, int yAmount) {
 		xPosition += xAmount;
-		yPosition += yAmount;
+		yPosition += yAmount;		
 	}
 	
 	public void setStation (Station station) {
 		this.station = station;
+	}
+
+	public void resetPosition() {
+		xPosition = (int) station.getXPos();
+		yPosition = (int) station.getYPos();
 	}
 }

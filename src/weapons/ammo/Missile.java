@@ -116,16 +116,8 @@ public class Missile implements Projectile{
 				idealThetaCorrected = Utility.standardizeAngle((velocityAngle) - 2 * (velocityAngle - idealTheta));
 				if (Math.abs(idealThetaCorrected - idealTheta) > 90)
 					idealThetaCorrected = Utility.standardizeAngle(velocityAngle + 180);
-				//System.out.println("Ideal theta is: " + idealTheta);
-				//System.out.println("Movement Angle is: " + velocityAngle);
-				//System.out.println("Ideal theta corrected is: " + idealThetaCorrected);
-
-				
-		
-				//System.out.println("Ideal theta corrected post is: " + idealThetaCorrected);
 				
 				rotateTo(idealThetaCorrected);
-				//System.out.println("actual roation is" + actualTheta);
 				if (Math.abs(idealThetaCorrected - actualTheta) % 360 < 8 ) {
 					
 					xVelocity += maxAcceleration * Math.cos(Math.toRadians(actualTheta));
@@ -164,14 +156,13 @@ public class Missile implements Projectile{
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
 			int xScreenPosition, int yScreenPosition, int screenSize) {
 		if (!active) return;
-		
-		if (xPos + xScreenOrigin > xScreenPosition &&
-				xPos + xScreenOrigin < xScreenPosition + screenSize &&
-				yPos + yScreenOrigin > yScreenPosition &&
-				yPos + yScreenOrigin < yScreenPosition + screenSize) {
 		g.setColor(Color.blue);
-		g.drawRect((int) xPos - (scale / 2) + xScreenOrigin, (int) yPos - (scale / 2) + yScreenOrigin, scale, scale);
-		}
+		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) 
+			g.drawRect(xScreenOrigin + (int) xPos - xScreenPosition,
+					yScreenOrigin + (int) yPos - yScreenPosition,
+					scale, scale);
+		
 		
 	}
 	

@@ -56,11 +56,14 @@ public class Particle {
 		return false;
 	}
 	
-	public void render(Graphics g, int xScreenStart, int yScreenStart) {
+	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
+			int xScreenPosition, int yScreenPosition, int screenSize) {
 		g.setColor(this.color);
-		g.drawRect((int) Math.round(xPos) + xScreenStart - size / 2,
-				(int) Math.round(yPos) + yScreenStart - size / 2,
-				size, size);
+		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) 
+			g.drawRect(xScreenOrigin + (int) xPos - xScreenPosition,
+					yScreenOrigin + (int) yPos - yScreenPosition,
+					size, size);
 	}
 	
 	public double getXPos() {

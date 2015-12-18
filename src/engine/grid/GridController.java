@@ -4,8 +4,8 @@ import entity.Entity;
 
 public class GridController {
 
-	final static int gridSize = 50;
-
+	final static int gridSize = 50; //size in pixels of each grid square
+	final static int mapSize = 1000; //size of map. amount of grids = mapsize * mapsize
 	private static boolean init = false;
 
 	static int xAmount;
@@ -18,10 +18,10 @@ public class GridController {
 	 * accepts xSize and ySize, returns if they work relative to grid size. if
 	 * returns false, try again
 	 **/
-	public static boolean init(int xSize, int ySize) {
+	public static boolean init() {
 
-		xAmount = Math.round(xSize / gridSize);
-		yAmount = Math.round(ySize / gridSize);
+		xAmount = mapSize;
+		yAmount = mapSize;
 
 		tiles = new GridTile[xAmount][yAmount];
 
@@ -67,5 +67,13 @@ public class GridController {
 
 		tiles[e.getXGrid()][e.getYGrid()].removeEntity(e);
 
+	}
+	
+	public static int getGridSize() {
+		return gridSize;
+	}
+	
+	public static int getMapSize() {
+		return mapSize;
 	}
 }
