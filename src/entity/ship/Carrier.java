@@ -53,7 +53,6 @@ public class Carrier extends Ship implements Entity{
 	
 		moduleAmount = Utility.getLayoutOccurences(layout, 2);
 		weaponAmount = Utility.getLayoutOccurences(layout, 1);
-		System.out.println(weaponAmount);
 
 		this.shield = new Shield(this.shieldRadius, this.shieldRate,
 				this.maxShield);
@@ -63,7 +62,6 @@ public class Carrier extends Ship implements Entity{
 	
 	@Override
 	public void update() {
-		
 		this.setMoveTarget(this.target);
 		this.move();
 		
@@ -88,16 +86,18 @@ public class Carrier extends Ship implements Entity{
 		}
 	}
 
-	public void render(Graphics g, int xScreenStart, int yScreenStart, int i, int i2, int i3) {
+	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
+			int xScreenPosition, int yScreenPosition, int screenSize) {
 		g.setColor(this.color);
 		
 		
+		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) 
+			g.fillOval(xScreenOrigin + (int) xPos - xScreenPosition,
+					yScreenOrigin + (int) yPos - yScreenPosition,
+					2 * this.scale, 2 * this.scale);
 		
-		g.fillRect(((int) Math.round(xPos) + xScreenStart) - (scale / 2),
-				((int) Math.round(yPos) + yScreenStart) - (scale  / 2),
-				scale, scale);
-		
-		this.shield.render(g, true, xScreenStart, yScreenStart); 
+		//this.shield.render(g, true, xScreenStart, yScreenStart); 
 	}
 
 }

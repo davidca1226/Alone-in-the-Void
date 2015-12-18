@@ -86,7 +86,7 @@ public class Station implements Entity {
 	}
 
 	public void update() {
-		System.out.println(yPos + "a");
+		System.out.println(xPos);
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) this.yPos);
 		
@@ -103,14 +103,13 @@ public class Station implements Entity {
 			if(weapons[i] != null) 
 				weapons[i].render(g, xScreenOrigin, yScreenOrigin, xScreenPosition, yScreenPosition, screenSize);
 		}
-		//if (xPos + xScreenOrigin > xScreenPosition &&
-			//	xPos + xScreenOrigin < xScreenPosition + screenSize &&
-				//yPos + yScreenOrigin > yScreenPosition &&
-				//yPos + yScreenOrigin < yScreenPosition + screenSize) {
+		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) {
 			g.setColor(this.color);
-			g.fillOval((int) this.xPos - this.radius + xScreenOrigin,
-					(int) this.yPos - this.radius + yScreenOrigin,
+			g.fillOval(xScreenOrigin + (int) xPos - xScreenPosition,
+					yScreenOrigin + (int) yPos - yScreenPosition,
 					2 * this.radius, 2 * this.radius);
+		}
 		//}
 		/*
 		for (int i = 0; i < weapons.length; i++) {

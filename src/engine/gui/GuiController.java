@@ -46,5 +46,9 @@ public class GuiController{
 	public void moveSpaceView(int xAmount, int yAmount) {
 		spaceView.moveX(xAmount, yAmount);
 	}
+
+	public void resetSpaceView() {
+		spaceView.resetPosition();
+	}
 	
 }

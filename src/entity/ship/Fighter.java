@@ -79,20 +79,16 @@ public class Fighter extends Ship implements Entity {
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
 			int xScreenPosition, int yScreenPosition, int screenSize) {
 		
-		if (xPos + xScreenOrigin > xScreenPosition &&
-				xPos + xScreenOrigin < xScreenPosition + screenSize &&
-				yPos + yScreenOrigin > yScreenPosition &&
-				yPos + yScreenOrigin < yScreenPosition + screenSize) {
-			g.setColor(this.color);
-			g.drawRect((int) this.xPos + xScreenOrigin - scale / 2,
-					(int) this.yPos + yScreenOrigin - scale / 2,
+		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize)  {
+			g.drawRect(xScreenOrigin + (int) xPos - xScreenPosition,
+					yScreenOrigin + (int) yPos - yScreenPosition,
 					scale, scale);
 		
-			this.shield.render(g, false, xScreenOrigin, yScreenOrigin); 
-			
+			this.shield.render( g, xScreenOrigin, yScreenOrigin,
+					xScreenPosition, yScreenPosition, screenSize, false); 	
 		}
 		
-
 		if (hasMouseFocus) {
 			g.drawString(Integer.toString(this.health),
 					(int) Math.round(this.xPos), (int) Math.round(this.yPos));

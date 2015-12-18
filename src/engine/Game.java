@@ -46,7 +46,7 @@ public class Game extends JPanel implements Runnable{
 	private final int interestPeriod = tps * 60;
 
 	private boolean[] keys = new boolean[120];
-	private boolean up, down, left, right;
+	private boolean up, down, left, right, space;
 	private boolean[] mouseButtons = new boolean[4];
 	private int mouseXPos, mouseYPos;
 	private boolean mouseClicked;
@@ -56,9 +56,10 @@ public class Game extends JPanel implements Runnable{
 		
 		GridController.init();
 	
-		station = new Station(GridController.getMapSize() * GridController.getGridSize() / 2,
-				GridController.getMapSize() * GridController.getGridSize() / 2);
-		
+		//station = new Station(GridController.getMapSize() * GridController.getGridSize() / 2,
+				//GridController.getMapSize() * GridController.getGridSize() / 2);
+		station = new Station(500, 500);
+
 		mainController = new MainController(station);
 		
 		Economy.Init(startCredits, interestAmount, interestPeriod);
@@ -120,7 +121,6 @@ public class Game extends JPanel implements Runnable{
 	public synchronized void start() {
 		running = true;
 		thread = new Thread(this, "Display");
-		System.out.println("You can play games.");
 		thread.start();
 	}
 
@@ -182,11 +182,13 @@ public class Game extends JPanel implements Runnable{
 		down = (keys[83] || keys[40]);
 		left = (keys[65] || keys[37]);
 		right = (keys[68] || keys[39]);
+		space = (keys[32]);
 
-		if (up) gui.moveSpaceView(0,1);
-		if (down) gui.moveSpaceView(0,-1);
-		if (left) gui.moveSpaceView(1,0);
-		if (right) gui.moveSpaceView(-1,0);
+		if (up) gui.moveSpaceView(0,-1);
+		if (down) gui.moveSpaceView(0,1);
+		if (left) gui.moveSpaceView(-1,0);
+		if (right) gui.moveSpaceView(1,0);
+		if (space) gui.resetSpaceView();
 		
 		station.update();
 		

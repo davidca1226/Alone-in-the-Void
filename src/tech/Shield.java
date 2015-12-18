@@ -66,26 +66,13 @@ public class Shield {
 	}
 
 	/** boolean is whether to render everything. smaller stuff should be false **/
-	public void render(Graphics g, boolean renderAll, int xPos, int yPos) {
+	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
+			int xScreenPosition, int yScreenPosition, int screenSize, boolean renderAll) {
 		g.setColor(this.color);
-		if (renderAll) {
-			// renders the shield percentage bar
-			g.drawRect((int) (this.xOrigin - (this.shieldScale * this.radius
-					* .5 * this.strength)) + xPos,
-					(int) (this.yOrigin + (this.radius * .8)) + yPos,
-					(int) (this.shieldScale * this.radius * this.strength),
-					(int) (this.radius * .1));
-		}
 
-		if (!(this.strength < .1)) {
-		for (int i = 0; i < 16; i++) {
-			g.drawArc((int) Math.round(this.xOrigin - (this.radius)) + xPos,
-					(int) Math.round(this.yOrigin - (this.radius)) +yPos,
-					2 * this.radius, 2 * this.radius,
-					(int) Math.round((i * (90/4)) + 45 / 4 - (45 * this.strength / 4)),
-					(int) Math.round(((45 * this.strength))*2 / 4));
-		}
-		}
+		//TODO Make this work.
+		
+		
 	}
 
 	public void addShield() {
