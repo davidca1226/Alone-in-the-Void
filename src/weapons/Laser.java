@@ -75,17 +75,18 @@ public class Laser extends AbstractWeapon implements Weapon {
 		if (this.target == null)
 			return;
 		g.setColor(Color.BLUE);
-		g.drawOval((int) (this.mount.getXPos() - this.range) + xScreenOrigin,
-				(int) (this.mount.getYPos() - this.range) + yScreenOrigin,
-				(int) (2 * this.range), (int) (2 * this.range));
 		if (!this.firing)
 			return;
 		if (this.target.getHealth() <= 0)
 			return;
-		g.drawLine((int) this.mount.getXPos() + (this.mount.getScale() / 2) + xScreenOrigin,
-				(int) this.mount.getYPos() + (this.mount.getScale() / 2) + yScreenOrigin,
-				(int) this.target.getXPos() + (this.target.getScale() / 2) + xScreenOrigin,
-				(int) this.target.getYPos() + (this.target.getScale() / 2) + yScreenOrigin);
+		if (mount.getXPos() >= xScreenPosition && mount.getXPos() <= xScreenPosition + screenSize &&
+				mount.getYPos() >= yScreenPosition && mount.getYPos() <= yScreenPosition + screenSize &&
+				target.getXPos() >= xScreenPosition && target.getXPos() <= xScreenPosition + screenSize &&
+				target.getYPos() >= xScreenPosition && target.getYPos() <= xScreenPosition + screenSize)
+		g.drawLine(xScreenOrigin + (int) mount.getXPos() - xScreenPosition - mount.getScale(),
+				yScreenOrigin + (int) mount.getYPos() - yScreenPosition - mount.getScale(),
+				xScreenOrigin + (int) target.getXPos() - xScreenPosition - target.getScale(),
+				yScreenOrigin + (int) target.getYPos() - yScreenPosition - target.getScale());
 
 	}
 

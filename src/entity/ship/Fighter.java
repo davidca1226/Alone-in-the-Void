@@ -18,7 +18,7 @@ public class Fighter extends Ship implements Entity {
 
 	public Fighter(int xPos, int yPos) {
 		
-		this.shieldRadius = 10;
+		this.shieldRadius = 3;
 		this.shieldRate = 3;
 		this.maxShield = 100;
 		this.shieldBoost = 1;
@@ -32,7 +32,7 @@ public class Fighter extends Ship implements Entity {
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 
-		this.scale = 4;
+		this.scale = 1;
 		this.age = 0;
 
 		this.xPos = xPos;
@@ -83,7 +83,8 @@ public class Fighter extends Ship implements Entity {
 					scale, scale);
 		
 			this.shield.render( g, xScreenOrigin, yScreenOrigin,
-					xScreenPosition, yScreenPosition, screenSize, false); 	
+					xScreenPosition, yScreenPosition, screenSize,
+					false); 	
 		}
 		
 		if (hasMouseFocus) {

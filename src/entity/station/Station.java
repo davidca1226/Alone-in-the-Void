@@ -28,14 +28,14 @@ public class Station implements Entity {
 	private int xIndex;
 	private int yIndex;
 	int stationRadius = 20; // number itself should always be an int
-	private int radius = 10;
+	private int radius = 15;
 	private int weaponEffectiveTimer = 0;
 
 	private Shield shield;
 
 	private Weapon[] weapons;
 	// Stats
-	int shieldRadius = 30;
+	int shieldRadius = 45;
 	int shieldRate = 25;
 	int maxShield = 10000;
 	double shieldBoost = 1;
