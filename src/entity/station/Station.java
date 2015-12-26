@@ -36,7 +36,7 @@ public class Station implements Entity {
 	private Weapon[] weapons;
 	// Stats
 	int shieldRadius = 30;
-	int shieldRate = 199;
+	int shieldRate = 25;
 	int maxShield = 10000;
 	double shieldBoost = 1;
 
@@ -46,6 +46,7 @@ public class Station implements Entity {
 	int maxHealth = 1000;
 
 	public Station(int xPos, int yPos) {
+		
 		this.shield = new Shield(this.shieldRadius, this.shieldRate,
 				this.maxShield);
 		this.xPos = xPos;
@@ -86,12 +87,11 @@ public class Station implements Entity {
 	}
 
 	public void update() {
-		System.out.println(xPos);
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) this.yPos);
 		
 		updateWeapons();
-		
+
 		for (int i = 0; i < weapons.length; i++) {
 			
 		}
@@ -106,18 +106,17 @@ public class Station implements Entity {
 		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
 				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) {
 			g.setColor(this.color);
-			g.fillOval(xScreenOrigin + (int) xPos - xScreenPosition,
-					yScreenOrigin + (int) yPos - yScreenPosition,
+			g.fillOval(xScreenOrigin + (int) xPos - xScreenPosition - radius,
+					yScreenOrigin + (int) yPos - yScreenPosition - radius,
 					2 * this.radius, 2 * this.radius);
+			g.setColor(Color.GRAY);
+			g.drawOval(xScreenOrigin + (int) xPos - xScreenPosition - radius,
+					yScreenOrigin + (int) yPos - yScreenPosition - radius,
+					2 * this.radius, 2 * this.radius);
+			this.shield.render(g, xScreenOrigin, yScreenOrigin,
+					xScreenPosition, yScreenPosition,
+					screenSize, true);
 		}
-		//}
-		/*
-		for (int i = 0; i < weapons.length; i++) {
-			weapons[i].render(g);
-		}
-		*/
-//		this.shield.render(g, true, xScreenStart, yScreenStart);
-		
 	}
 	
 	public void addWeapon(Weapon weapon, int pos) {

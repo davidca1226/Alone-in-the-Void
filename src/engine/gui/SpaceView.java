@@ -57,15 +57,15 @@ public class SpaceView extends GuiAbstract{
 
 	public void moveX(int xAmount, int yAmount) {
 		xPosition += xAmount;
-		yPosition += yAmount;		
+		yPosition += yAmount;	
 	}
-	
+
 	public void setStation (Station station) {
 		this.station = station;
 	}
 
 	public void resetPosition() {
-		xPosition = (int) station.getXPos();
-		yPosition = (int) station.getYPos();
+		xPosition = (int) station.getXPos() - (squareSize / 2);
+		yPosition = (int) station.getYPos() - (squareSize / 2);
 	}
 }

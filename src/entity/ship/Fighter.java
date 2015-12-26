@@ -57,7 +57,6 @@ public class Fighter extends Ship implements Entity {
 		}
 
 		this.move();
-
 		if (this.xPos > this.xLimit) {
 			this.xPos = 0;
 		}
@@ -70,17 +69,15 @@ public class Fighter extends Ship implements Entity {
 		if (this.yPos < 0) {
 			this.yPos = this.yLimit;
 		}
-		
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) this.yPos);
-
 	}
 	
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
 			int xScreenPosition, int yScreenPosition, int screenSize) {
-		
+		g.setColor(Color.blue);
 		if (xPos >= xScreenPosition && xPos <= xScreenPosition + screenSize &&
-				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize)  {
+				yPos >= yScreenPosition && yPos <= yScreenPosition + screenSize) {
 			g.drawRect(xScreenOrigin + (int) xPos - xScreenPosition,
 					yScreenOrigin + (int) yPos - yScreenPosition,
 					scale, scale);

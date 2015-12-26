@@ -7,8 +7,7 @@ import java.util.List;
 
 public class Shield {
 
-	double xOrigin;
-	double yOrigin;
+	double xPos, yPos;
 	int radius;
 	int rechargeRate;
 	int capacity;
@@ -36,13 +35,12 @@ public class Shield {
 
 	public void update(int xOrigin, int yOrigin) {
 
-		this.xOrigin = xOrigin;
-		this.yOrigin = yOrigin;
+		this.xPos = xOrigin;
+		this.yPos = yOrigin;
 
 	}
 
 	public void recharge(double rechargeBoost) {
-
 		this.currentCharge += this.rechargeRate;
 
 		if (this.currentCharge > this.capacity) {
@@ -68,9 +66,16 @@ public class Shield {
 	/** boolean is whether to render everything. smaller stuff should be false **/
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
 			int xScreenPosition, int yScreenPosition, int screenSize, boolean renderAll) {
+		double percentCharge = (double) currentCharge / (double) capacity;
 		g.setColor(this.color);
-
-		//TODO Make this work.
+		
+		for (int i = 0; i < percentCharge * 30; i++) {
+			g.drawArc(xScreenOrigin + (int) xPos - xScreenPosition - radius, 
+					yScreenOrigin + (int) yPos - yScreenPosition - radius, 
+					radius * 2, radius * 2,
+					(int) (Math.random() * 360), (int) (percentCharge * 30));
+			//TODO Make this work.
+		}
 		
 		
 	}

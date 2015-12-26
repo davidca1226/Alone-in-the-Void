@@ -39,7 +39,10 @@ public class GridController {
 	public static void addEntity(Entity e) {
 		if (!init)
 			return;
-
+		if (e.getXPos() <= 0 || e.getYPos() <= 0) {
+			e.dealDamage(2140000000); //max damage an int can be
+			return;
+		}
 		int targetXPos = (int) Math.round(e.getXPos());
 		int targetYPos = (int) Math.round(e.getYPos());
 

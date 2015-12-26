@@ -57,6 +57,9 @@ public class Missile implements Projectile{
 	
 	public void update() {
 		if (!active) return;
+		if (health <= 0) {
+			destroyed();
+		}
 		if (target.getHealth() <= 0) targetDestroyed();
 		
 		targetXCenter = target.getXPos() + (target.getScale() / 2);
@@ -76,7 +79,6 @@ public class Missile implements Projectile{
 		if (driftingTimer > 600 && !targetActive)
 			destroyed();
 		}
-			
 		
 		if (Utility.calculateCollision(target.getScale(), xPos, yPos,
 				targetXCenter, targetYCenter) && targetActive) impact();
