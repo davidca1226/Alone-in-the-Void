@@ -58,7 +58,7 @@ public class Game extends JPanel implements Runnable{
 	
 		//station = new Station(GridController.getMapSize() * GridController.getGridSize() / 2,
 				//GridController.getMapSize() * GridController.getGridSize() / 2);
-		station = new Station(500, 500);
+		station = new Station(25000, 25000);
 
 		mainController = new MainController(station);
 		

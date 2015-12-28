@@ -39,7 +39,8 @@ public class GridController {
 	public static void addEntity(Entity e) {
 		if (!init)
 			return;
-		if (e.getXPos() <= 0 || e.getYPos() <= 0) {
+		if (e.getXPos() <= 0 || e.getYPos() <= 0 ||
+				e.getXPos() >= gridSize * mapSize || e.getYPos() >= gridSize * mapSize) {
 			e.dealDamage(2140000000); //max damage an int can be
 			return;
 		}

@@ -29,7 +29,7 @@ public class Carrier extends Ship implements Entity{
 
 	public Carrier (int xPos, int yPos) {
 		
-		warpdrive = new Warpdrive(10, 300, .02, 40, this);
+		warpdrive = new Warpdrive(10, 300, .001, 40, this);
 		
 		this.shieldRadius = 60;
 		this.shieldRate = 20;

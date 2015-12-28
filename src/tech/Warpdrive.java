@@ -9,6 +9,7 @@ import entity.Entity;
 public class Warpdrive {
 	private int chargeRate, maxCapacity;
 	private double maxVelocity, maxAcceleration;
+	private double currentMaxAcceleration = 0;
 	private int capacity;
 	private Entity mount;
 	private boolean warping;
@@ -20,7 +21,7 @@ public class Warpdrive {
 		this.setMaxCapacity(capacity);
 		this.mount = mount;
 		this.maxVelocity = maxVelocity;
-		this.maxAcceleration = maxAcceleration;
+		this.maxAcceleration = maxAcceleration + 1;
 	}
 	
 	public void update(boolean charging) {
@@ -34,17 +35,24 @@ public class Warpdrive {
 	public boolean initiateWarp() {
 		double currentVelocity = Math.sqrt(mount.getXVelocity() * mount.getXVelocity() +
 				mount.getYVelocity() * mount.getYVelocity());
+		
+		if (currentMaxAcceleration == 0)
+			currentMaxAcceleration = maxAcceleration - 1;
+		
+		currentMaxAcceleration *= maxAcceleration;
+		
 		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
-				1, 180, .25 * currentVelocity, mount.getActualTheta(),
-				2, Color.decode("#33ccff"), true);
+				1 * (int) (currentVelocity / 2),
+				180, .25 * currentVelocity + 1, mount.getActualTheta(),
+				5, Color.decode("#33ccff"), true);
 		if (currentVelocity < maxVelocity) {
 			//if (capacity > maxCapacity / 10) 
 			//	warping = true;
 			//if (warping) {
 			//if () 
 
-			mount.setXVelocity(mount.getXVelocity() + Math.cos(Math.toRadians(mount.getActualTheta())));
-			mount.setYVelocity(mount.getYVelocity() + Math.sin(Math.toRadians(mount.getActualTheta())));
+			mount.setXVelocity(mount.getXVelocity() + currentMaxAcceleration * Math.cos(Math.toRadians(mount.getActualTheta())));
+			mount.setYVelocity(mount.getYVelocity() + currentMaxAcceleration * Math.sin(Math.toRadians(mount.getActualTheta())));
 			return true;
 		}
 		else return false;
