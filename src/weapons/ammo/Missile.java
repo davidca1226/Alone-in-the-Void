@@ -91,14 +91,14 @@ public class Missile implements Projectile{
 	}
 	
 	public void destroyed() {
-		ParticleController.createParticleField(xPos, yPos, 15,
-				this.speed * .25, this.actualTheta , 15);
+		ParticleController.createParticleField(xPos, yPos, 15, 120,
+				this.speed * .25, this.actualTheta , 15, Color.YELLOW, true);
 		active = false;
 	}
 	
 	public void impact() {
-		ParticleController.createParticleField(xPos, yPos, 15,
-				this.speed * .25, this.actualTheta , 15);
+		ParticleController.createParticleField(xPos, yPos, 15, 120,
+				this.speed * .25, this.actualTheta , 15, Color.YELLOW, true);
 		target.dealDamage(damage);
 		active = false;
 	}
@@ -109,7 +109,7 @@ public class Missile implements Projectile{
 		
 		if (!drifting) {
 			if (!(fuel <= 0)) {
-				ParticleController.createNewParticle(xPos, yPos, 1, 25, this.speed * .25, this.actualTheta - 180);
+				ParticleController.createNewParticle(xPos, yPos, 1, 25, this.speed * .25, this.actualTheta - 180, Color.YELLOW, true);
 				xTargetDist = (targetXCenter - xPos);
 				yTargetDist = (targetYCenter - yPos);
 		
@@ -242,5 +242,25 @@ public class Missile implements Projectile{
 
 	public double getDPS() {
 		return this.damage;
+	}
+	
+	public void setXVelocity(double xVelocity) {
+		this.xVelocity = xVelocity;
+	}
+	
+	public double getXVelocity() {
+		return this.xVelocity;
+	}
+	
+	public void setYVelocity(double yVelocity) {
+		this.yVelocity = yVelocity;
+	}
+	
+	public double getYVelocity() {
+		return this.yVelocity;
+	}
+	
+	public double getActualTheta() {
+		return actualTheta;
 	}
 }

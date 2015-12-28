@@ -57,18 +57,6 @@ public class Fighter extends Ship implements Entity {
 		}
 
 		this.move();
-		if (this.xPos > this.xLimit) {
-			this.xPos = 0;
-		}
-		if (this.yPos > this.yLimit) {
-			this.yPos = 0;
-		}
-		if (this.xPos < 0) {
-			this.xPos = this.xLimit;
-		}
-		if (this.yPos < 0) {
-			this.yPos = this.yLimit;
-		}
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) this.yPos);
 	}
@@ -92,4 +80,5 @@ public class Fighter extends Ship implements Entity {
 					(int) Math.round(this.xPos), (int) Math.round(this.yPos));
 		}
 	}
+
 }

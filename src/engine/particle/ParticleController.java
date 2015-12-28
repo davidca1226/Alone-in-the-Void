@@ -1,5 +1,6 @@
 package engine.particle;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -13,9 +14,9 @@ public class ParticleController {
 		
 		
 		public static void createNewParticle(double xPos, double yPos, int size, int duration,
-			double movementSpeed, double movementDirection) {
+			double movementSpeed, double movementDirection, Color color, Boolean darken) {
 			
-			Particle newParticle = new Particle(xPos, yPos, size, duration, movementSpeed, movementDirection);
+			Particle newParticle = new Particle(xPos, yPos, size, duration, movementSpeed, movementDirection, color, darken);
 			particles.add(newParticle);
 			return;
 			
@@ -29,14 +30,14 @@ public class ParticleController {
 			}
 		}
 		
-		public static void createParticleField(double xPos, double yPos, int particleAmount, //inaccuracy is per side, so 15 degrees
-				double movementMaxSpeed, double movementBaseAngle, double movementAngleInaccuracy ) { //is 30 potential degrees total
+		public static void createParticleField(double xPos, double yPos, int particleAmount, int duration, //inaccuracy is per side, so 15 degrees
+				double movementMaxSpeed, double movementBaseAngle, double movementAngleInaccuracy, Color color, boolean darken ) { //is 30 potential degrees total
 			int amountSQRT = (int) Math.sqrt(particleAmount);
 			if (movementMaxSpeed == 0) {
 				for (int  i = 0; i < particleAmount; i++) {
 					createNewParticle(xPos - amountSQRT + (2 * amountSQRT * Math.random()),
 							yPos - amountSQRT + (2 * amountSQRT * Math.random()),
-							1, 120, 0, 0); //last two zeros are movement and angle
+							1, duration, 0, 0, color, darken); //last two zeros are movement and angle
 				}
 				return; 
 			}
@@ -44,9 +45,10 @@ public class ParticleController {
 			for (int  i = 0; i < particleAmount; i++) {
 				createNewParticle(xPos - amountSQRT + (2 * amountSQRT * Math.random()),
 						yPos - amountSQRT + (2 * amountSQRT * Math.random()),
-						1, 120,
+						1, duration,
 						Math.random() * movementMaxSpeed,
-						movementBaseAngle - movementAngleInaccuracy + (Math.random() * movementAngleInaccuracy * 2)); //last two zeros are movement and angle
+						movementBaseAngle - movementAngleInaccuracy + (Math.random() * movementAngleInaccuracy * 2),//last two zeros are movement and angle
+						color, darken); 
 			}
 			
 			

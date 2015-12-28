@@ -9,13 +9,14 @@ public class Particle {
 	double xVelocity, yVelocity;
 	int duration, durationCounter, size;
 	int darkenInterval, darkenIterationsAmount = 50; //minus two, for first and last. particle does not spawn darkened.
-	Color color = Color.YELLOW;                      //(cont.) should be twice amount due to randomness
+	Color color;                      //(cont.) should be twice amount due to randomness
+	boolean darken;
 	
 	double movementSpeed, movementAngle;
 	boolean moving = false;
 	
 	public Particle(double xPos, double yPos, int size, int duration, 
-			double movementSpeed, double movementAngle) {
+			double movementSpeed, double movementAngle, Color color, boolean darken) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.duration = duration;
@@ -25,12 +26,14 @@ public class Particle {
 		if (movementSpeed != 0)
 			moving = true;
 		durationCounter = 0;
+		this.darken = darken;
+		this.color = color;
 		darkenInterval = duration / darkenIterationsAmount;
 	}
 	 
 	public void update() {
 		durationCounter++;
-		if (durationCounter >= darkenInterval) {
+		if (durationCounter >= darkenInterval && darken) {
 			if (Math.random() < .5) {
 				color = color.darker();
 			}

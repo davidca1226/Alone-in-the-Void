@@ -194,6 +194,30 @@ public class Station implements Entity {
 		
 	}
 	
-	public void setMoveTarget(Entity target) {};
+	public void setMoveTarget(Entity target) {}
+
+	public void setXVelocity(double xVelocity) {
+		//NOPE
+		
+	}
+
+	public double getXVelocity() {
+		return 0;
+	}
+
+	public void setYVelocity(double yVelocity) {
+		//NOPE
+		
+	}
+
+	public double getYVelocity() {
+
+		return 0;
+	}
+
+
+	public double getActualTheta() {
+		return 0;
+	};
 
 }

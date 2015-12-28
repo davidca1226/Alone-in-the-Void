@@ -15,6 +15,13 @@ public interface Entity {
 	int getXGrid();
 	int getYGrid();
 
+	void setXVelocity(double xVelocity);
+	double getXVelocity();
+	void setYVelocity(double yVelocity);
+	double getYVelocity();
+	
+	double getActualTheta();
+	
 	void update();
 
 	void render(Graphics g, int xScreenOrigin, int yScreenOrigin,

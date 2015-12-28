@@ -31,7 +31,7 @@ public class MainController {
 		
 		setTarget(station);
 		
-		Carrier carrier = new Carrier(100, 100); //TODO hacked together, remove later
+		Carrier carrier = new Carrier(25, 100); //TODO hacked together, remove later
 		carrierController.add(carrier);
 		GridController.addEntity(carrier);
 		

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import tech.Shield;
+import tech.Warpdrive;
 import engine.Game;
 import engine.Utility;
 import engine.controller.MainController;
@@ -28,6 +29,8 @@ public class Carrier extends Ship implements Entity{
 
 	public Carrier (int xPos, int yPos) {
 		
+		warpdrive = new Warpdrive(10, 300, .02, 40, this);
+		
 		this.shieldRadius = 60;
 		this.shieldRate = 20;
 		this.maxShield = 4000;
@@ -42,7 +45,7 @@ public class Carrier extends Ship implements Entity{
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 
-		this.scale = 40;
+		this.scale = 6;
 		this.age = 0;
 
 		this.xPos = xPos;
@@ -64,20 +67,6 @@ public class Carrier extends Ship implements Entity{
 	public void update() {
 		this.setMoveTarget(this.target);
 		this.move();
-		
-		if (this.xPos > this.xLimit) {
-			this.xPos = 0;
-		}
-		if (this.yPos > this.yLimit) {
-			this.yPos = 0;
-		}
-		if (this.xPos < 0) {
-			this.xPos = this.xLimit;
-		}
-		if (this.yPos < 0) {
-			this.yPos = this.yLimit;
-		}
-		
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) yPos);
 		
