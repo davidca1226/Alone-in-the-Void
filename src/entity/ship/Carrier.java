@@ -29,7 +29,7 @@ public class Carrier extends Ship implements Entity{
 
 	public Carrier (int xPos, int yPos) {
 		
-		warpdrive = new Warpdrive(10, 300, .001, 40, this);
+		warpdrive = new Warpdrive(10, 300, .01, 40, this);
 		
 		this.shieldRadius = 60;
 		this.shieldRate = 20;
@@ -50,6 +50,8 @@ public class Carrier extends Ship implements Entity{
 
 		this.xPos = xPos;
 		this.yPos = yPos;
+		
+		this.xVelocity = 1;
 
 		this.xLimit = Game.width - (this.scale + 1);
 		this.yLimit = Game.height - (this.scale + 1);

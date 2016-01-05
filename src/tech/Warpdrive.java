@@ -9,7 +9,7 @@ import entity.Entity;
 public class Warpdrive {
 	private int chargeRate, maxCapacity;
 	private double maxVelocity, maxAcceleration;
-	private double currentMaxAcceleration = 0;
+	private double currentMaxAcceleration = 0, currentVelocity = 0;
 	private int capacity;
 	private Entity mount;
 	private boolean warping;
@@ -33,7 +33,7 @@ public class Warpdrive {
 	}
 	
 	public boolean initiateWarp() {
-		double currentVelocity = Math.sqrt(mount.getXVelocity() * mount.getXVelocity() +
+		currentVelocity = Math.sqrt(mount.getXVelocity() * mount.getXVelocity() +
 				mount.getYVelocity() * mount.getYVelocity());
 		
 		if (currentMaxAcceleration == 0)
@@ -43,8 +43,8 @@ public class Warpdrive {
 		
 		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
 				1 * (int) (currentVelocity / 2),
-				180, .25 * currentVelocity + 1, mount.getActualTheta(),
-				5, Color.decode("#33ccff"), true);
+				180, .1 * currentVelocity + 1, mount.getActualTheta(),
+				15, Color.decode("#33ccff"), true);
 		if (currentVelocity < maxVelocity) {
 			//if (capacity > maxCapacity / 10) 
 			//	warping = true;
@@ -59,11 +59,11 @@ public class Warpdrive {
 	}
 	
 	public void stopWarp() {
+		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
+				60, 360, .25 * currentVelocity, mount.getActualTheta(),
+				60, Color.decode("#00ace6"), true);
 		mount.setXVelocity(0);
 		mount.setYVelocity(0);
-		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
-				30, 360, 1, mount.getActualTheta(),
-				20, Color.decode("#00ace6"), true);
 	}
 	
 	public int getMaxCapacity() {

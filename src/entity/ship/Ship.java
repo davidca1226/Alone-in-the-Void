@@ -145,7 +145,7 @@ public abstract class Ship implements Entity {
 		
 		this.speed = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
 		
-		if (this.totalDist > 150)
+		if (this.totalDist > 300)
 			needToWarp = true;
 		else
 			needToWarp = false;
