@@ -6,8 +6,9 @@ import java.awt.Graphics;
 import engine.Utility;
 import engine.particle.ParticleController;
 import entity.Entity;
+import entity.MovableEntityAbstract;
 
-public class Missile implements Projectile{
+public class Missile extends MovableEntityAbstract implements Projectile{
 	
 	Entity target;
 	
