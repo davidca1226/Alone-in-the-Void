@@ -44,6 +44,8 @@ public class Carrier extends Ship implements Entity{
 		this.maxHealth = 1000;
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
+		
+		this.desiredTargetDistance = 200;
 
 		this.scale = 6;
 		this.age = 0;

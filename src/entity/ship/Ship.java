@@ -5,6 +5,7 @@ import java.awt.Color;
 import tech.Shield;
 import tech.Warpdrive;
 import weapons.ammo.Missile;
+import engine.Utility;
 import entity.Entity;
 import entity.MovableEntityAbstract;
 
@@ -26,6 +27,8 @@ public abstract class Ship extends MovableEntityAbstract implements Entity {
 	double maxAcceleration;
 	
 	protected int age; //age in ticks
+	
+	protected int desiredTargetDistance;
 	
 	boolean evasive = false;
 	boolean warping = false;
@@ -83,14 +86,21 @@ public abstract class Ship extends MovableEntityAbstract implements Entity {
 		
 		this.speed = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
 		
-		if (this.totalDist > 300)
+		if (this.totalDist > desiredTargetDistance * 4)
 			needToWarp = true;
 		else
 			needToWarp = false;
 		
 		
-		this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
+		if (this.totalDist > this.desiredTargetDistance) 
+			this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
 				/ Math.PI;
+		else if (this.speed > this.maxSpeed / 10) 
+			this.idealTheta = Utility.standardizeAngle(((Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
+					/ Math.PI) + 180);
+			
+		
+		
 		this.rotateTo(this.idealTheta);
 
 		if ((needToWarp || warping) && idealTheta - actualTheta < .1 && 

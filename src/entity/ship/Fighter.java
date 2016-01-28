@@ -31,6 +31,8 @@ public class Fighter extends Ship implements Entity {
 		this.maxHealth = 1000;
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
+		
+		this.desiredTargetDistance = 0;
 
 		this.scale = 1;
 		this.age = 0;
