@@ -1,7 +1,7 @@
 package engine;
 
 public class Utility {
-
+	
 	public static boolean calculateCollision(double distance, double x1,
 			double y1, double x2, double y2) {
 		double xDistance = Math.abs(x1 - x2);
@@ -12,7 +12,6 @@ public class Utility {
 		else
 			return false;
 	}
-	
 	
 	public static double standardizeAngle(double angle) {
 		while (angle < 0)
