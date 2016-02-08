@@ -11,6 +11,8 @@ public class Spritesheet {
 	String filePath;
 	int dimensions;
 	
+	Sprite[][] sprites;
+	
 	BufferedImage image;
 	
 	Spritesheet(String filePath, int dimensions) {
@@ -22,5 +24,18 @@ public class Spritesheet {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	
+		if (image == null) System.out.println("asd");
+		
+		sprites = new Sprite
+				[(image.getWidth() / dimensions) - 1]
+				[(image.getHeight() / dimensions) - 1];
+		
+		for (int x = 0; x < sprites.length / dimensions; x++)
+			for (int y = 0; y < sprites[0].length; y++)
+				sprites[x][y] =
+				new Sprite(image.getSubimage(x * image.getWidth(), y * image.getHeight(),
+						dimensions, dimensions));
 	}
+
 }

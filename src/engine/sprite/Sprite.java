@@ -1,9 +1,13 @@
 package engine.sprite;
 
-public class Sprite {
+import java.awt.image.BufferedImage;
 
-	public Sprite(Spritesheet spritesheet) {
-		
+public class Sprite {
+	
+	BufferedImage sprite;
+
+	public Sprite(BufferedImage image) {
+		sprite = image;
 	}
 	
 }

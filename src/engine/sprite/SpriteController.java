@@ -7,7 +7,7 @@ public class SpriteController {
 	public static void init() {
 		sheets = new Spritesheet[dimensions.length];
 		
-		for (int i = 0; i < locations.length; i++) {
+		for (int i = 0; i < locations.length - 1; i++) {
 			sheets[i] = new Spritesheet(locations[i], dimensions[i]);
 		}
 		
