@@ -17,6 +17,7 @@ import engine.grid.GridController;
 import engine.gui.GuiController;
 import engine.gui.MenuController;
 import engine.input.Mouse;
+import engine.sprite.SpriteController;
 import entity.station.Station;
 //woop woop
 
@@ -55,6 +56,8 @@ public class Game extends JPanel implements Runnable{
 	public Game() {
 		
 		GridController.init();
+		
+		SpriteController.init();
 	
 		//station = new Station(GridController.getMapSize() * GridController.getGridSize() / 2,
 				//GridController.getMapSize() * GridController.getGridSize() / 2);
