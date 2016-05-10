@@ -13,6 +13,12 @@ import entity.station.Station;
 
 public class MainController {
 	
+	private int escalation = 0;
+	private int momentum = 0;
+	private int resources;
+	private int aggrivation = 0;
+	private boolean assaulting = false;
+	
 	private static FighterController fighterController;
 	private static CarrierController carrierController;
 	private static Entity target;
@@ -23,6 +29,9 @@ public class MainController {
 	private static int difficulty = 1;
 
 	public MainController(Station station) {
+		
+		resources = 10000;
+		
 		fighterController = new FighterController();
 		carrierController = new CarrierController();
 		
@@ -39,6 +48,10 @@ public class MainController {
 	}
 	
 	public void update() {
+		
+		resources++;
+		
+		
 		
 		fighterController.update();
 		carrierController.update();

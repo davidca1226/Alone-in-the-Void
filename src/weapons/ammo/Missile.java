@@ -15,7 +15,7 @@ public class Missile implements Projectile{
 	double maxAcceleration = .02;
 	double maxRotation = 3;
 	int scale = 2;
-	int fuel = 3000000;
+	int fuel = 3000;
 	int health, maxHealth = 10;
 	
 	double xTargetDist;
