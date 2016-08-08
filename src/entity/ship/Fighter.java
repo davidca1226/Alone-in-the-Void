@@ -40,9 +40,6 @@ public class Fighter extends Ship implements Entity {
 		this.xPos = xPos;
 		this.yPos = yPos;
 
-		this.xLimit = Game.width - (this.scale + 1);
-		this.yLimit = Game.height - (this.scale + 1);
-
 		this.shield = new Shield(this.shieldRadius, this.shieldRate,
 				this.maxShield);
 

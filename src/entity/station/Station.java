@@ -193,8 +193,6 @@ public class Station implements Entity {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void setMoveTarget(Entity target) {}
 
 	public void setXVelocity(double xVelocity) {
 		//NOPE
@@ -218,6 +216,11 @@ public class Station implements Entity {
 
 	public double getActualTheta() {
 		return 0;
+	}
+
+	@Override
+	public void setTarget(Entity target) {
+		
 	};
 
 }

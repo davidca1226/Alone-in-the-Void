@@ -263,4 +263,9 @@ public class Missile implements Projectile{
 	public double getActualTheta() {
 		return actualTheta;
 	}
+
+	@Override
+	public void setTarget(Entity target) {
+		setMoveTarget(target);
+	}
 }

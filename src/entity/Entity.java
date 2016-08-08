@@ -33,5 +33,5 @@ public interface Entity {
 	void dealDamage(int damage);
 	void missileLock(Missile missle);
 	
-	void setMoveTarget(Entity target);
+	void setTarget(Entity target);
 }

@@ -36,6 +36,9 @@ public abstract class Ship implements Entity {
 	protected double yVelocity = 0;
 	protected double xPos;
 	protected double yPos;
+	protected double lastDist;
+	protected double decelDistance;
+	protected boolean accelerating;
 	int xIndex;
 	int yIndex;
 	protected double rotationAmount = 0;
@@ -65,13 +68,11 @@ public abstract class Ship implements Entity {
 	double targetXPos;
 	double targetYPos;
 
-	double xLimit;
-	double yLimit;
-
 	protected Object lock;
 
 	public void setTarget(Entity e) {
 		this.target = e;
+		setMoveTarget(target);
 	}
 
 	public double getDPS() {
@@ -83,14 +84,6 @@ public abstract class Ship implements Entity {
 
 		if (target == null)
 			return;	
-		//if (this.evasive) {
-		//	this.targetXPos = (2 * this.xPos) - this.incomingMissile.getXPos();
-		//	this.targetYPos = (2 * this.yPos) - this.incomingMissile.getYPos();
-		//
-		//	return;
-		//}
-		
-		
 
 		this.targetXPos = target.getXPos();
 		this.targetYPos = target.getYPos();
@@ -104,45 +97,49 @@ public abstract class Ship implements Entity {
 		this.totalDist = Math.sqrt(xTargetDist * xTargetDist + yTargetDist * yTargetDist);
 		
 		this.speed = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
+		this.decelDistance = Math.pow(speed, 2) / (2 * maxAcceleration);
+		if (this.totalDist <= decelDistance)
+			accelerating = false;
+		else 
+			accelerating = true;
 		
 		if (this.totalDist > desiredTargetDistance * 4)
 			needToWarp = true;
 		else
 			needToWarp = false;
 		
-		
-		if (this.totalDist > this.desiredTargetDistance) 
-			this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
+		this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
 				/ Math.PI;
-		else if (this.speed > this.maxSpeed / 10) 
-			this.idealTheta = Utility.standardizeAngle(((Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
-					/ Math.PI) + 180);
-			
 		
-		
-		this.rotateTo(this.idealTheta);
-
-		if ((needToWarp || warping) && idealTheta - actualTheta < .1 && 
-				idealTheta - actualTheta > -.1 && warpdrive != null) 
+		if (this.accelerating || warping) {
+			this.rotateTo(this.idealTheta);
+		} else {
+			this.rotateTo(Utility.standardizeAngle(this.idealTheta + 180));
+		}
+		if ((needToWarp || warping) && Utility.standardizeAngle(idealTheta - actualTheta) < .1 && 
+				Utility.standardizeAngle(idealTheta - actualTheta) > -.1 && warpdrive != null) 
 		{
-			if (this.speed <.1 || warping) 
-			{
+			System.out.println("1");
+			
+			if (this.speed <.1 || (warping)) 
+			{ 
+				System.out.println("2");
 				warping = true;
-				if (needToWarp) {
-					warpdrive.initiateWarp();	
+				if (needToWarp && totalDist <= lastDist) {
+					warpdrive.initiateWarp();
+					System.out.println("3");
 				} else {
-					System.out.println("ASDFAGFA");
 					warpdrive.stopWarp();
 					warping = false;
 				}
 				
-			} else {
+			} else { //decel to begin warp
 				this.xVelocity -= this.maxAcceleration 
 						* Math.signum(this.xVelocity);
 				this.yVelocity -= this.maxAcceleration
 						* Math.signum(this.yVelocity);
-			}
-		} else {
+			} 
+		} else  if (!needToWarp) { //otherwise if no need to warp, normal move
 			this.xVelocity += this.maxAcceleration
 					* Math.cos(Math.toRadians(this.actualTheta));
 			this.yVelocity += this.maxAcceleration
@@ -150,6 +147,7 @@ public abstract class Ship implements Entity {
 		}
 		this.xPos += this.xVelocity;
 		this.yPos += this.yVelocity;
+		lastDist = totalDist;
 	}
 
 

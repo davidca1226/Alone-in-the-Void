@@ -21,11 +21,12 @@ public abstract class ControllerAbstract {
 			if(this.entities.get(i).getHealth() <= 0)
 				this.entities.remove(i);
 		}
-		
-		if (target != null)
+	
+		if (target != null) {
 			for (int i = 0; i < this.entities.size(); i++) {
-				this.entities.get(i).setMoveTarget(target);
+				this.entities.get(i).setTarget(target);
 			}
+		}
 	}
 
 	public void add(Entity e) {

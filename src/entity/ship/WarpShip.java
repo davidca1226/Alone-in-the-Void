@@ -10,34 +10,31 @@ import engine.Utility;
 import engine.controller.MainController;
 import entity.Entity;
 
-public class Carrier extends Ship implements Entity{
+public class WarpShip  extends Ship implements Entity{
 	
 	private int[][] layout = new int[][] { //0 =empty space, 1 = weapon, 2 = module. 
-			{0,1,2,2,2,1,0},
-			{2,2,2,2,2,2,2},
-			{2,2,2,2,2,2,2},
-			{2,2,2,2,2,2,2},
-			{0,1,2,2,2,1,0}
-	};
-	
-	private int[] xPoly = new int[] {
-			
+			{0,1,2,2,1,0},
+			{2,2,2,2,2,2},
+			{2,2,2,2,2,2},
+			{0,1,2,2,1,0}
 	};
 	
 	private int moduleAmount;
 	private int weaponAmount;
 
-	public Carrier (int xPos, int yPos) {
+	private boolean setTarget = false;
+
+	public WarpShip(int xPos, int yPos) {
 		
-		warpdrive = new Warpdrive(10, 300, .01, 40, this);
+		warpdrive = new Warpdrive(10, 300, .01, 80, this);
 		
 		this.shieldRadius = 60;
 		this.shieldRate = 20;
 		this.maxShield = 4000;
 		this.shieldBoost = 1;
-		this.maxAcceleration = .002;
+		this.maxAcceleration = .005;
 
-		this.color = Color.red;
+		this.color = Color.lightGray;
 
 		this.enginePower = 100;
 		this.maxSpeed = 1.25;
@@ -45,9 +42,9 @@ public class Carrier extends Ship implements Entity{
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 		
-		this.desiredTargetDistance = 200;
+		this.desiredTargetDistance = 100;
 
-		this.scale = 6;
+		this.scale = 3;
 		this.age = 0;
 
 		this.xPos = xPos;
@@ -61,17 +58,16 @@ public class Carrier extends Ship implements Entity{
 
 		this.lock = new Object();
 	}
-	
-	@Override
+
 	public void update() {
-		this.setMoveTarget(this.target);
+		if (target != null && !setTarget) {
+			this.targetXPos = target.getXPos() + (Math.random() * 100 - 50);
+			this.targetYPos = target.getYPos() + (Math.random() * 100 - 50);
+			setTarget = true;
+		}
 		this.move();
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) yPos);
-		
-		if (Math.random() < .002) {
-			MainController.createNewFighter((int) xPos, (int) yPos); //first param is for fighter 
-		}
 	}
 
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
@@ -85,7 +81,6 @@ public class Carrier extends Ship implements Entity{
 					yScreenOrigin + (int) yPos - yScreenPosition,
 					2 * this.scale, 2 * this.scale);
 		
-		//this.shield.render(g, true, xScreenStart, yScreenStart); 
 	}
 
 }

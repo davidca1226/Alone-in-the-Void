@@ -39,13 +39,13 @@ public class SpaceView extends GuiAbstract{
 		g.setColor(Color.BLACK);
 		g.fillRect(xOrigin, yOrigin, squareSize, squareSize);
 		
-		List<Entity> tempList = MainController.getFighterList();
+		List<Entity> tempList = MainController.getAllEntities();
 		for (int i = 0; i < tempList.size(); i++) {
 				tempList.get(i).render(g, xOrigin, yOrigin, xPosition, yPosition, squareSize);
 		}
 		
 		List<Particle> particleList = ParticleController.getParticles();
-		if (particleList != null){
+		if (particleList != null && particleList.size() > 0){
 			for (int i = 0; i < particleList.size(); i++) {
 					particleList.get(i).render(g, xOrigin, yOrigin, xPosition, yPosition, squareSize);
 			}

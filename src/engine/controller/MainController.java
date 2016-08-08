@@ -4,23 +4,33 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.List;
 
+import engine.Game;
 import engine.Utility;
 import engine.grid.GridController;
 import entity.Entity;
 import entity.ship.Carrier;
 import entity.ship.Fighter;
+import entity.ship.WarpShip;
 import entity.station.Station;
 
 public class MainController {
 	
 	private int escalation = 0;
 	private int momentum = 0;
+	private int warpShips;
+	private int desiredWarpShips = 1;
 	private int resources;
+	private int forceStrength;
+	private int desiredForceStrength;
 	private int aggrivation = 0;
+	private int aggrivationThreshold;
 	private boolean assaulting = false;
 	
-	private static FighterController fighterController;
-	private static CarrierController carrierController;
+	private int assaultTimer;
+	
+	private static FighterController fighterController; //add new controllers to
+	private static CarrierController carrierController; //both here and 
+	private static WarpShipController warpShipController; //the constructor (1/3)
 	private static Entity target;
 	
 	private static ArrayList<ControllerAbstract> controllerList = 
@@ -31,36 +41,99 @@ public class MainController {
 	public MainController(Station station) {
 		
 		resources = 10000;
+		aggrivationThreshold = 100;
 		
-		fighterController = new FighterController();
-		carrierController = new CarrierController();
+		fighterController = new FighterController(); //new controllers go here AND
+		carrierController = new CarrierController(); //(2/3)
+		warpShipController = new WarpShipController();
 		
-		controllerList.add(fighterController);
+		controllerList.add(fighterController);  //new controllers also go here (3/3)
 		controllerList.add(carrierController);
+		controllerList.add(warpShipController);
 		
-		setTarget(station);
-		
-		Carrier carrier = new Carrier(25, 100); //TODO hacked together, remove later
-		carrierController.add(carrier);
-		GridController.addEntity(carrier);
-		
+		setTarget(station);	
 		
 	}
 	
 	public void update() {
 		
 		resources++;
+		aggrivation++; //TODO hacked together, make this better
+		
+		if (aggrivation >= aggrivationThreshold && assaulting == false) {
+			assaulting = true;
+			momentum = 50;
+			desiredForceStrength = 100; //TODO hacked together, make this better
+		}
+		
+		if (assaulting) {
+			assaultUpdate();
+		}
 		
 		
 		
-		fighterController.update();
-		carrierController.update();
+		for (int i=0; i < controllerList.size(); i++) {
+			controllerList.get(i).update();
+		}
+	}
+	
+	public void assaultUpdate() {
+		assaultTimer++;
+		if (!(assaultTimer >= Game.getTPS())) {
+			return;
+		} else {
+			assaultTimer = 0;
+		}
+		int focus = 0;
+		if (warpShips < desiredWarpShips) { //0 is do nothing, 1 is spawn warp ship
+			focus = 1;
+		} else if (Math.random() < .9) { //2 is spawn carrier
+			focus = 0;
+		} else if (Math.random() < .1) { //3 is spawn fighter
+			focus = 2;
+		} else {
+			focus = 3;
+		}
+		
+		switch (focus) {
+		
+		default: return;
+		
+		case 1: 
+			int mapSize = GridController.getGridSize() *
+				GridController.getMapSize(); //mapsize in PIXELS
+			int xPos = 0;
+			int yPos = 0;
+			
+			if (Math.random() >= .5) { //on x axis
+				if (Math.random() >= .5) { // near 0
+					xPos = 10;
+					yPos = 10 + ((int)(Math.random() * (mapSize - 20)));
+				} else { //near max
+					xPos = mapSize - 10;
+					yPos = 10 + ((int) (Math.random() * (mapSize - 20)));
+				}
+			} else { //on y axis
+				if (Math.random() >= .5) { // near 0
+					xPos = 10 + ((int)(Math.random() * (mapSize - 20)));
+					yPos = 10;
+				} else { // near max
+					xPos = 10 + ((int)(Math.random() * (mapSize - 20)));
+					yPos = mapSize - 10;
+				}
+			}
+			createNewWarpShip(xPos, yPos);
+			warpShips++;
+			break;
+		}
 	}
 	
 	public void setTarget(Entity targetEntity) {
 		target = targetEntity;
-		fighterController.setTarget(target);
-		carrierController.setTarget(target);
+		for (int i=0; i < controllerList.size(); i++) {
+			//controllerList.get(i).setTarget(target);
+			warpShipController.setTarget(target);
+		}
 	}
 	
 	public void render(Graphics g) {
@@ -71,10 +144,12 @@ public class MainController {
 
 	}
 	
-	public static List<Entity> getFighterList() {
+	public static List<Entity> getAllEntities() {
 		ArrayList<Entity> finalList = new ArrayList<Entity>();
-		finalList.addAll(fighterController.getControlledList());
-		finalList.addAll(carrierController.getControlledList());
+		
+		for (int i = 0; i < controllerList.size(); i++)
+			finalList.addAll(controllerList.get(i).getControlledList());
+	
 		return finalList;
 	}
 	
@@ -108,12 +183,24 @@ public class MainController {
 		return nearest;
 	}
 	
-	public static void createNewShip(int type, int xPos, int yPos) { //Type: 1 = fighter
-		if (type == 1) {
-			Fighter newFighter = new Fighter(xPos, yPos); 
+	public static void createNewFighter(int xPos, int yPos) {
+		Fighter newFighter = new Fighter(xPos, yPos); 
 			
-			fighterController.add(newFighter);
-			GridController.addEntity(newFighter);
-		}	
+		fighterController.add(newFighter);
+		GridController.addEntity(newFighter);
+	}	
+	
+	public static void createNewCarrier(int xPos, int yPos) {
+		Carrier newCarrier = new Carrier(xPos, yPos); 
+		
+		carrierController.add(newCarrier);
+		GridController.addEntity(newCarrier);
+	}
+	
+	public static void createNewWarpShip(int xPos, int yPos) {
+		WarpShip newWarpShip = new WarpShip(xPos, yPos); 
+		
+		warpShipController.add(newWarpShip);
+		GridController.addEntity(newWarpShip);
 	}
 }
