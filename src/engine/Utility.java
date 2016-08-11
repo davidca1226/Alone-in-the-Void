@@ -21,12 +21,30 @@ public class Utility {
 	
 	public static boolean isOnCourse(double issuerXPos, double issuerYPos,
 			double targetXPos, double targetYPos,
-			double xVelocity, double yVelocity) {
+			double issuerXVelocity, double issuerYVelocity,
+			double targetXVelocity, double targetYVelocity,
+			double issuerScale, double targetScale) {
 		
-		if (((targetXPos - issuerXPos) / xVelocity) * yVelocity >= (targetYPos - issuerYPos) * .9 &&
-				((targetXPos - issuerXPos) / xVelocity) * yVelocity <= (targetXPos - issuerXPos) * 1.1)
-			return true;
-		return false;
+		double mintime =  //time at which these will be closest
+				  -(issuerXPos*issuerXVelocity - issuerXVelocity*targetXPos
+						  - (issuerXPos - targetXPos)*0 + 
+						  issuerYPos*issuerYVelocity - issuerYVelocity*targetYPos
+						  - (issuerYPos - targetYPos)*0) 
+				  /
+				  (issuerXVelocity * issuerXVelocity - 2*issuerXVelocity*targetXVelocity + targetXVelocity * targetXVelocity +
+						  issuerYVelocity * issuerYVelocity - 2*issuerYVelocity*targetYVelocity + targetYVelocity * targetYVelocity);
+		if (mintime <= 0) return false;
+		double mindist = Math.sqrt(
+				  Math.pow((mintime*issuerXVelocity - mintime*targetXVelocity + issuerXPos - targetXPos), 2) 
+				  + 
+				  Math.pow((mintime*issuerYVelocity - mintime*targetYVelocity + issuerYPos - targetYPos), 2)
+				);
+		System.out.println(mintime + " . " + mindist);
+		
+		
+		
+		if (Math.abs(mindist) < issuerScale + targetScale) return true;
+		else return false;
 		
 	}
 

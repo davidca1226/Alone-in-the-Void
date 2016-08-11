@@ -64,13 +64,16 @@ public class Missile implements Projectile{
 		
 		targetXCenter = target.getXPos() + (target.getScale() / 2);
 		targetYCenter = target.getYPos() + (target.getScale() / 2);
-		if ((Utility.isOnCourse(xPos, yPos, target.getXPos(), target.getYPos(), xVelocity, yVelocity) && speed >= cruisingSpeed)
+		if ((Utility.isOnCourse(xPos + scale /2, yPos + scale / 2, targetXCenter, targetYCenter,
+					xVelocity, yVelocity, target.getXVelocity(), target.getYVelocity(),
+					scale, target.getScale())
+				&& speed >= cruisingSpeed)
 				|| fuel <= 0 || !targetActive) {
 			drifting = true;
 		} else {
 			drifting = false;
 		}
-
+		System.out.println(drifting);
 		move();
 			
 		

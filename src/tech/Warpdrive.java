@@ -36,7 +36,6 @@ public class Warpdrive {
 	public boolean sustainWarp(double totalDist, double desiredDist) {
 		currentVelocity = Math.sqrt(mount.getXVelocity() * mount.getXVelocity() +
 				mount.getYVelocity() * mount.getYVelocity());
-		//System.out.println(totalDist + " . " + currentVelocity + " . " + desiredDist);
 		if (totalDist < desiredDist || totalDist - currentVelocity <  desiredDist) {
 			this.stopWarp();
 			warping = false;

@@ -130,7 +130,6 @@ public abstract class Ship implements Entity {
 			if (this.decelDistance <= Math.abs(this.totalDist - this.desiredTargetDistance)) {
 				this.decelerate();
 			} else {
-				System.out.println("here");
 				this.rotateTo(idealTheta);
 				this.xVelocity += this.maxAcceleration
 						* Math.cos(Math.toRadians(this.actualTheta));
@@ -152,10 +151,8 @@ public abstract class Ship implements Entity {
 		double theta = Utility.standardizeAngle(((Math.atan2(this.yVelocity, this.xVelocity) * 180)
 				/ Math.PI) - 180);
 		if (this.xVelocity < this.maxAcceleration * Math.cos(Math.toRadians(theta)) || this.xVelocity == 0) {
-			System.out.println("1");
 			this.xVelocity = 0;
 		} else {
-			System.out.println("2");
 			this.xVelocity += this.maxAcceleration
 					* Math.cos(Math.toRadians(theta));
 		}
