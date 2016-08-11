@@ -52,7 +52,7 @@ public class StationTile {
 				switch (menu.getSelectedOption()) {
 				case 1: station.addWeapon(new Laser(station, 10, 10, 200 ), index);
 				break;
-				case 2: station.addWeapon(new MissileLauncher(station, 16, 10, 100), index); 
+				case 2: station.addWeapon(new MissileLauncher(station, 160, 2, 800), index); 
 				break;
 				}
 			

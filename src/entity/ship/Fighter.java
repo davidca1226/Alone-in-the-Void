@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 import tech.Shield;
+import tech.Warpdrive;
 import engine.Game;
 import entity.Entity;
 
@@ -17,6 +18,8 @@ public class Fighter extends Ship implements Entity {
 	double rotationAmount;
 
 	public Fighter(int xPos, int yPos) {
+		
+		warpdrive = new Warpdrive(10, 300, .01, 80, this);
 		
 		this.shieldRadius = 3;
 		this.shieldRate = 3;
@@ -32,7 +35,7 @@ public class Fighter extends Ship implements Entity {
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 		
-		this.desiredTargetDistance = 0;
+		this.desiredTargetDistance = 100;
 
 		this.scale = 1;
 		this.age = 0;
@@ -56,6 +59,7 @@ public class Fighter extends Ship implements Entity {
 		}
 
 		this.move();
+		this.changePos();
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) this.yPos);
 	}

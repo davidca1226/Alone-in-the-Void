@@ -66,9 +66,9 @@ public class MainController {
 			desiredForceStrength = 100; //TODO hacked together, make this better
 		}
 		
-		if (assaulting) {
-			assaultUpdate();
-		}
+		//if (assaulting) {
+		//	assaultUpdate();
+		//}
 		
 		
 		
@@ -129,10 +129,11 @@ public class MainController {
 	}
 	
 	public void setTarget(Entity targetEntity) {
+		
 		target = targetEntity;
 		for (int i=0; i < controllerList.size(); i++) {
-			//controllerList.get(i).setTarget(target);
-			warpShipController.setTarget(target);
+			controllerList.get(i).setTarget(target);
+			
 		}
 	}
 	
