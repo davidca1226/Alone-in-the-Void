@@ -12,7 +12,8 @@ public class Warpdrive {
 	private double currentMaxAcceleration = 0, currentVelocity = 0;
 	private int capacity;
 	private Entity mount;
-	private boolean warping;
+	private boolean warping = true;
+	private boolean needsToStop;
 	
 	public Warpdrive(int chargeRate, int capacity,
 			double maxAcceleration, double maxVelocity,
@@ -32,9 +33,20 @@ public class Warpdrive {
 		}
 	}
 	
-	public boolean initiateWarp() {
+	public boolean sustainWarp(double totalDist, double desiredDist) {
 		currentVelocity = Math.sqrt(mount.getXVelocity() * mount.getXVelocity() +
 				mount.getYVelocity() * mount.getYVelocity());
+		//System.out.println(totalDist + " . " + currentVelocity + " . " + desiredDist);
+		if (totalDist < desiredDist || totalDist - currentVelocity <  desiredDist) {
+			this.stopWarp();
+			warping = false;
+			return warping;
+		} else return initiateWarp(); //temporary fix until i refine the difference more
+	}
+	
+	
+	public boolean initiateWarp() {
+		
 		
 		if (currentMaxAcceleration == 0)
 			currentMaxAcceleration = maxAcceleration - 1;
@@ -53,15 +65,17 @@ public class Warpdrive {
 
 			mount.setXVelocity(mount.getXVelocity() + currentMaxAcceleration * Math.cos(Math.toRadians(mount.getActualTheta())));
 			mount.setYVelocity(mount.getYVelocity() + currentMaxAcceleration * Math.sin(Math.toRadians(mount.getActualTheta())));
-			return true;
 		}
-		else return false;
+		return warping;
 	}
 	
 	public void stopWarp() {
 		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
-				60, 360, .25 * currentVelocity, mount.getActualTheta(),
+				60, 360, .05 * currentVelocity, mount.getActualTheta(),
 				60, Color.decode("#00ace6"), true);
+		ParticleController.createParticleField(mount.getXPos(), mount.getYPos(),
+				10, 800, .1 * currentVelocity, mount.getActualTheta(),
+				5, Color.white, true);
 		mount.setXVelocity(0);
 		mount.setYVelocity(0);
 	}
