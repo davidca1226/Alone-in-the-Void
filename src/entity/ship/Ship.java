@@ -32,8 +32,8 @@ public abstract class Ship implements Entity {
 	protected double idealTheta;
 	protected double maxRotation;
 	protected double actualTheta;
-	protected double xVelocity = 0;
-	protected double yVelocity = 0;
+	protected double xVelocity = 1;
+	protected double yVelocity = 1;
 	protected double xPos;
 	protected double yPos;
 	protected double lastDist;
@@ -81,10 +81,9 @@ public abstract class Ship implements Entity {
 	}
 	
 	public void setMoveTarget(Entity target) {
-
+		
 		if (target == null)
 			return;	
-
 		this.targetXPos = target.getXPos();
 		this.targetYPos = target.getYPos();
 	}
@@ -95,90 +94,83 @@ public abstract class Ship implements Entity {
 		this.xTargetDist = (this.targetXPos - this.xPos);
 		this.yTargetDist = (this.targetYPos - this.yPos);
 		this.totalDist = Math.sqrt(xTargetDist * xTargetDist + yTargetDist * yTargetDist);
-		
 		this.speed = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
 		this.decelDistance = Math.pow(speed, 2) / (2 * maxAcceleration);
-		if (this.totalDist <= decelDistance)
-			accelerating = false;
-		else 
-			accelerating = true;
-		
-		if (this.totalDist > desiredTargetDistance * 4)
-			needToWarp = true;
-		else
-			needToWarp = false;
 		
 		this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
 				/ Math.PI;
-		
-		if (this.accelerating || warping) {
-			this.rotateTo(this.idealTheta);
-		} else {
-			this.rotateTo(Utility.standardizeAngle(this.idealTheta + 180));
+		if (warping) {
+			this.rotateTo(idealTheta);
+			this.warping = this.warpdrive.sustainWarp(this.totalDist, this.desiredTargetDistance);
+			return;
 		}
-		if ((needToWarp || warping) && Utility.standardizeAngle(idealTheta - actualTheta) < .1 && 
-				Utility.standardizeAngle(idealTheta - actualTheta) > -.1 && warpdrive != null) 
-		{
-			System.out.println("1");
+		if (this.totalDist > desiredTargetDistance * 10) {
+			needToWarp = true;
+		} else {
+			needToWarp = false;
+		}
+		
+		if (needToWarp) {
 			
-			if (this.speed <.1 || (warping)) 
-			{ 
-				System.out.println("2");
+			if (this.speed > .001) {
+				this.decelerate();
+				return;
+			}
+			if (this.speed <= .001) {
+				this.rotateTo(idealTheta);
+				needToWarp = false;
 				warping = true;
-				if (needToWarp && totalDist <= lastDist) {
-					warpdrive.initiateWarp();
-					System.out.println("3");
-				} else {
-					warpdrive.stopWarp();
-					warping = false;
-				}
-				
-			} else { //decel to begin warp
-				this.xVelocity -= this.maxAcceleration 
-						* Math.signum(this.xVelocity);
-				this.yVelocity -= this.maxAcceleration
-						* Math.signum(this.yVelocity);
-			} 
-		} else  if (!needToWarp) { //otherwise if no need to warp, normal move
+				this.warpdrive.initiateWarp();
+				return;
+			}
+		}
+		
+		if (Math.abs(this.desiredTargetDistance - (this.totalDist)) > this.scale / 2 && 
+				(!warping || needToWarp)) { //if not happy with current pos
+			if (this.decelDistance <= Math.abs(this.totalDist - this.desiredTargetDistance)) {
+				this.decelerate();
+			} else {
+				System.out.println("here");
+				this.rotateTo(idealTheta);
+				this.xVelocity += this.maxAcceleration
+						* Math.cos(Math.toRadians(this.actualTheta));
+				this.yVelocity += this.maxAcceleration
+						* Math.sin(Math.toRadians(this.actualTheta));
+			}
+			
+		}
+		
+		
+	}
+	
+	protected void changePos() {
+		this.xPos += this.xVelocity;
+		this.yPos += this.yVelocity;
+	}
+
+	protected void decelerate() {
+		double theta = Utility.standardizeAngle(((Math.atan2(this.yVelocity, this.xVelocity) * 180)
+				/ Math.PI) - 180);
+		if (this.xVelocity < this.maxAcceleration * Math.cos(Math.toRadians(theta)) || this.xVelocity == 0) {
+			System.out.println("1");
+			this.xVelocity = 0;
+		} else {
+			System.out.println("2");
 			this.xVelocity += this.maxAcceleration
-					* Math.cos(Math.toRadians(this.actualTheta));
+					* Math.cos(Math.toRadians(theta));
+		}
+		if (this.yVelocity < this.maxAcceleration * Math.sin(Math.toRadians(theta)) || this.yVelocity == 0) {
+			this.yVelocity = 0;
+		} else { 
 			this.yVelocity += this.maxAcceleration
-					* Math.sin(Math.toRadians(this.actualTheta));
+					* Math.sin(Math.toRadians(theta));
 		}
 		this.xPos += this.xVelocity;
 		this.yPos += this.yVelocity;
-		lastDist = totalDist;
 	}
 
-
 	protected void rotateTo(double targetRotation) {
-		if (targetRotation >= 360) {
-			targetRotation -= 360;
-		}
-		if (targetRotation <= 0) {
-			targetRotation += 360;
-		}
-
-		if (Math.abs(targetRotation - this.actualTheta) > this.maxRotation) {
-			rotationAmount = this.maxRotation;
-		} else {
-			this.rotationAmount = Math.abs(targetRotation - this.actualTheta);
-		}
-		if (Math.abs(this.actualTheta - this.idealTheta) < .05)
-			return;
-
-		if ((((this.actualTheta - targetRotation) + 360) % 360) > 180) {
-			this.actualTheta += this.rotationAmount;
-		} else {
-			this.actualTheta -= this.rotationAmount;
-		}
-
-		if (this.actualTheta >= 360) {
-			this.actualTheta -= 360;
-		}
-		if (this.actualTheta <= 0) {
-			this.actualTheta += 360;
-		}
+		this.actualTheta = targetRotation;
 	}
 
 	
