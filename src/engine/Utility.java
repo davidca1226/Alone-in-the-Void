@@ -13,6 +13,10 @@ public class Utility {
 			return false;
 	}
 	
+	public static double toDegrees(double angle) {
+	    return (angle * 180) / Math.PI;
+	}
+	
 	public static double standardizeAngle(double angle) {
 		while (angle < 0)
 			angle += 360;
