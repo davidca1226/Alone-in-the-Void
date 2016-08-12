@@ -66,9 +66,9 @@ public class MainController {
 			desiredForceStrength = 100; //TODO hacked together, make this better
 		}
 		
-		//if (assaulting) {
-		//	assaultUpdate();
-		//}
+		if (assaulting) {
+			assaultUpdate();
+		}
 		
 		
 		

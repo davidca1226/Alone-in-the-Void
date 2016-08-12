@@ -25,7 +25,7 @@ public class Missile implements Projectile{
 	double targetYCenter;
 	
 	double speed = 0;
-	double cruisingSpeed = .5;
+	double cruisingSpeed = 2;
 	double idealTheta, idealThetaCorrected;
 	double actualTheta;
 	double velocityAngle; //direction it's going
@@ -83,8 +83,8 @@ public class Missile implements Projectile{
 			destroyed();
 		}
 		
-		if (Utility.calculateCollision(target.getScale(), xPos, yPos,
-				targetXCenter, targetYCenter) && targetActive) impact();
+		if (Utility.calculateCollision( xPos - scale / 2, yPos - scale / 2,
+				targetXCenter, targetYCenter, scale, target.getScale()) && targetActive) impact();
 	}
 	
 	

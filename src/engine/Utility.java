@@ -2,12 +2,12 @@ package engine;
 
 public class Utility {
 	
-	public static boolean calculateCollision(double distance, double x1,
-			double y1, double x2, double y2) {
+	public static boolean calculateCollision(double x1,
+			double y1, double x2, double y2, double issuerScale, double targetScale) {
 		double xDistance = Math.abs(x1 - x2);
 		double yDistance = Math.abs(y1 - y2);
-		double actualDistance = xDistance + yDistance;
-		if (actualDistance < distance)
+		double actualDistance = Math.sqrt(xDistance*xDistance + yDistance*yDistance);
+		if (actualDistance < (issuerScale+targetScale) / 2)
 			return true;
 		else
 			return false;

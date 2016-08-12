@@ -5,6 +5,7 @@ import java.awt.Graphics;
 
 import tech.Shield;
 import tech.Warpdrive;
+import tech.Warpgate;
 import engine.Game;
 import engine.Utility;
 import engine.controller.MainController;
@@ -21,12 +22,17 @@ public class WarpShip  extends Ship implements Entity{
 	
 	private int moduleAmount;
 	private int weaponAmount;
+	
+	private boolean deployed;
 
 	private boolean setTarget = false;
+	
+	private Warpgate warpgate;
 
 	public WarpShip(int xPos, int yPos) {
 		
 		warpdrive = new Warpdrive(10, 300, .01, 80, this);
+		warpgate = new Warpgate(this);
 		
 		this.shieldRadius = 60;
 		this.shieldRate = 20;
@@ -42,10 +48,11 @@ public class WarpShip  extends Ship implements Entity{
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 		
-		this.desiredTargetDistance = 100;
+		this.desiredTargetDistance = 300;
 
 		this.scale = 3;
 		this.age = 0;
+		this.deployed = false;
 
 		this.xPos = xPos;
 		this.yPos = yPos;
@@ -65,9 +72,25 @@ public class WarpShip  extends Ship implements Entity{
 			this.targetYPos = target.getYPos() + (Math.random() * 100 - 50);
 			setTarget = true;
 		}
-		this.move();
+		
+		if (deployed) {
+		} else {
+			if (this.desiredTargetDistance * .98 <= this.totalDist &&
+					this.desiredTargetDistance * 1.02 >= this.totalDist) {
+				this.deploy();
+			} else {
+				this.move();
+				this.changePos();
+			}
+		}
+		warpgate.update();
 		this.shield.recharge(this.shieldBoost);
 		this.shield.update((int) this.xPos, (int) yPos);
+	}
+	
+	private void deploy() {
+		this.deployed = true;
+		warpgate.activate();
 	}
 
 	public void render(Graphics g, int xScreenOrigin, int yScreenOrigin,
@@ -82,5 +105,14 @@ public class WarpShip  extends Ship implements Entity{
 					2 * this.scale, 2 * this.scale);
 		
 	}
-
+	
+	public boolean getDeployed() {
+		return deployed;
+	}
+	
+	public Warpgate getWarpgate() {
+		return warpgate;
+	}
 }
+
+
