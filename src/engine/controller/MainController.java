@@ -85,13 +85,17 @@ public class MainController {
 			assaultTimer = 0;
 		}
 		int focus = 0;
-		if (warpShips < desiredWarpShips) { //0 is do nothing, 1 is spawn warp ship
+		//0: Do nothing
+		//1: Spawn Warp Ship
+		//2: Warp in Fighter
+		//3: Warp in Carrier
+		if (warpShips < desiredWarpShips) {
 			focus = 1;
-		} else if (Math.random() < .9) { //2 is spawn carrier
+		} else if (Math.random() < .9) {
 			focus = 0;
-		} else if (Math.random() < .1) { //3 is spawn fighter
+		} else if (Math.random() < .1) {
 			focus = 2;
-		} else {
+		} else if (Math.random() < .1) {
 			focus = 3;
 		}
 		
@@ -125,6 +129,10 @@ public class MainController {
 			createNewWarpShip(xPos, yPos);
 			warpShips++;
 			break;
+			
+		case 2:
+		    break;
+		
 		}
 	}
 	
@@ -143,6 +151,25 @@ public class MainController {
 	
 	public void updateStation(Station station) {
 
+	}
+	
+	public Entity getNearestWarpShip(double xTarget, double yTarget) {
+	    Entity bestShip = null;
+	    double bestDist = -1;
+	    double dist;
+	    for (int i = 0; i < warpShipController.getControlledList().size(); i++) {
+	       dist = Utility.getDistance(warpShipController.getControlledList().get(i).getXPos(),
+	           warpShipController.getControlledList().get(i).getYPos(), xTarget, yTarget); 
+	           if (bestDist == -1) {
+	                bestDist = dist;  
+	                bestShip =  warpShipController.getControlledList().get(i);
+	           } 
+	           if (dist < bestDist) {
+	                bestDist = dist;  
+	                bestShip =  warpShipController.getControlledList().get(i);
+	           }
+	    }
+	    return bestShip;
 	}
 	
 	public static List<Entity> getAllEntities() {
