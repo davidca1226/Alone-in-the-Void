@@ -48,8 +48,6 @@ public class Missile implements Projectile{
 		this.yPos = yPos;
 		this.damage = damage;
 		
-		this.xVelocity = 2 * Math.random() - 1;
-		this.yVelocity = 2 * Math.random() - 1;
 		health = maxHealth;
 		
 		target.missileLock(this);

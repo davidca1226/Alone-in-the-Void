@@ -27,7 +27,7 @@ public class Carrier extends Ship implements Entity{
 	private int moduleAmount;
 	private int weaponAmount;
 
-	public Carrier (int xPos, int yPos) {
+	public Carrier (double xPos, double yPos) {
 		
 		warpdrive = new Warpdrive(10, 300, .01, 40, this);
 		

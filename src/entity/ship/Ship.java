@@ -29,15 +29,16 @@ public abstract class Ship implements Entity {
 	protected int enginePower;
 	protected double maxSpeed;
 	protected double maxAcceleration;
+	protected double thetaToTarget;
 	protected double idealTheta;
 	protected double maxRotation;
 	protected double actualTheta;
-	protected double xVelocity = 1;
-	protected double yVelocity = 1;
+	protected double xVelocity = 0;
+	protected double yVelocity = 0;
 	protected double xPos;
 	protected double yPos;
 	protected double lastDist;
-	protected double decelDistance;
+	protected double decelDistance, decelTime;
 	protected boolean accelerating;
 	int xIndex;
 	int yIndex;
@@ -63,10 +64,15 @@ public abstract class Ship implements Entity {
 
 	double xTargetDist;
 	double yTargetDist;
+	double moveTargetXDistance;
+	double moveTargetYDistance;
 	double totalDist;
+	double moveTargetDist;
 
 	double targetXPos;
 	double targetYPos;
+	double moveTargetXPos;
+	double moveTargetYPos;
 
 	protected Object lock;
 
@@ -90,15 +96,25 @@ public abstract class Ship implements Entity {
 	
 	protected void move() {
 		
-		
 		this.xTargetDist = (this.targetXPos - this.xPos);
 		this.yTargetDist = (this.targetYPos - this.yPos);
 		this.totalDist = Math.sqrt(xTargetDist * xTargetDist + yTargetDist * yTargetDist);
 		this.speed = Math.sqrt(xVelocity * xVelocity + yVelocity * yVelocity);
-		this.decelDistance = Math.pow(speed, 2) / (2 * maxAcceleration);
-		
-		this.idealTheta = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
+		this.decelTime = (speed / maxAcceleration);
+		this.decelDistance = (speed / 2) * decelTime;
+		this.thetaToTarget = (Math.atan2(this.yTargetDist, this.xTargetDist) * 180)
 				/ Math.PI;
+		
+		this.moveTargetXPos =  targetXPos + (Math.cos(Math.toRadians(Utility.standardizeAngle(thetaToTarget) + 180)) * desiredTargetDistance);
+		this.moveTargetYPos =  targetYPos + (Math.sin(Math.toRadians(Utility.standardizeAngle(thetaToTarget) + 180)) * desiredTargetDistance);
+		this.moveTargetXDistance = (this.moveTargetXPos - this.xPos);
+		this.moveTargetYDistance = (this.moveTargetYPos - this.yPos);
+		this.moveTargetDist = Math.sqrt(moveTargetXDistance * moveTargetXDistance
+				+ moveTargetYDistance * moveTargetYDistance);
+		
+		this.idealTheta = (Math.atan2(this.moveTargetYDistance, this.moveTargetXDistance) * 180)
+				/ Math.PI;;
+		
 		if (warping) {
 			this.rotateTo(idealTheta);
 			this.warping = this.warpdrive.sustainWarp(this.totalDist, this.desiredTargetDistance);
@@ -124,12 +140,12 @@ public abstract class Ship implements Entity {
 				return;
 			}
 		}
-		
-		if (Math.abs(this.desiredTargetDistance - (this.totalDist)) > this.scale / 2 && 
-				(!warping || needToWarp)) { //if not happy with current pos
-			if (this.decelDistance <= Math.abs(this.totalDist - this.desiredTargetDistance)) {
+		if ((!warping || needToWarp)) { //if not happy with current pos
+			if (this.decelDistance >= Math.abs(this.moveTargetDist)) {
+				System.out.println("decel");
 				this.decelerate();
 			} else {
+				System.out.println("acel");
 				this.rotateTo(idealTheta);
 				this.xVelocity += this.maxAcceleration
 						* Math.cos(Math.toRadians(this.actualTheta));
@@ -162,8 +178,6 @@ public abstract class Ship implements Entity {
 			this.yVelocity += this.maxAcceleration
 					* Math.sin(Math.toRadians(theta));
 		}
-		this.xPos += this.xVelocity;
-		this.yPos += this.yVelocity;
 	}
 
 	protected void rotateTo(double targetRotation) {

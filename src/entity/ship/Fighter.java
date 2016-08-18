@@ -17,7 +17,7 @@ public class Fighter extends Ship implements Entity {
 
 	double rotationAmount;
 
-	public Fighter(int xPos, int yPos) {
+	public Fighter(double xPos, double yPos) {
 		
 		warpdrive = new Warpdrive(10, 300, .01, 80, this);
 		
@@ -35,7 +35,7 @@ public class Fighter extends Ship implements Entity {
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 		
-		this.desiredTargetDistance = 100;
+		this.desiredTargetDistance = 300;
 
 		this.scale = 1;
 		this.age = 0;
@@ -77,7 +77,12 @@ public class Fighter extends Ship implements Entity {
 					xScreenPosition, yScreenPosition, screenSize,
 					false); 	
 		}
-		
+		if (moveTargetXPos >= xScreenPosition && moveTargetXPos <= xScreenPosition + screenSize &&
+				moveTargetYPos >= yScreenPosition && moveTargetYPos <= yScreenPosition + screenSize) {
+			g.drawRect(xScreenOrigin + (int) moveTargetXPos - xScreenPosition,
+					yScreenOrigin + (int) moveTargetYPos - yScreenPosition,
+					scale * 5, scale * 5);
+		}
 		if (hasMouseFocus) {
 			g.drawString(Integer.toString(this.health),
 					(int) Math.round(this.xPos), (int) Math.round(this.yPos));

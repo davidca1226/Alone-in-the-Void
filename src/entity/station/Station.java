@@ -35,7 +35,7 @@ public class Station implements Entity {
 
 	private Weapon[] weapons;
 	// Stats
-	int shieldRadius = 45;
+	int shieldRadius = 300;
 	int shieldRate = 25;
 	int maxShield = 10000;
 	double shieldBoost = 1;

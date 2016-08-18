@@ -126,12 +126,15 @@ public class MainController {
 					yPos = mapSize - 10;
 				}
 			}
-			createNewWarpShip(xPos, yPos);
+			//createNewWarpShip(xPos, yPos);
 			warpShips++;
 			break;
 			
 		case 2:
-		    break;
+			if (getNearestWarpShip(target.getXPos(), target.getYPos()) == null)
+				break;
+			WarpShip ship = getNearestWarpShip(target.getXPos(), target.getYPos());
+		    createNewFighter(ship.getXPos(), ship.getYPos());
 		
 		}
 	}
@@ -153,23 +156,25 @@ public class MainController {
 
 	}
 	
-	public Entity getNearestWarpShip(double xTarget, double yTarget) {
+	public WarpShip getNearestWarpShip(double xTarget, double yTarget) {
 	    Entity bestShip = null;
 	    double bestDist = -1;
 	    double dist;
 	    for (int i = 0; i < warpShipController.getControlledList().size(); i++) {
-	       dist = Utility.getDistance(warpShipController.getControlledList().get(i).getXPos(),
-	           warpShipController.getControlledList().get(i).getYPos(), xTarget, yTarget); 
-	           if (bestDist == -1) {
-	                bestDist = dist;  
-	                bestShip =  warpShipController.getControlledList().get(i);
-	           } 
-	           if (dist < bestDist) {
-	                bestDist = dist;  
-	                bestShip =  warpShipController.getControlledList().get(i);
+	    	if (((WarpShip) warpShipController.getControlledList().get(i)).getDeployed()) {
+	    		dist = Utility.getDistance(warpShipController.getControlledList().get(i).getXPos(),
+	    				warpShipController.getControlledList().get(i).getYPos(), xTarget, yTarget); 
+	    		if (bestDist == -1) {
+	    			bestDist = dist;  
+	    			bestShip =  warpShipController.getControlledList().get(i);
+	    		} 
+	    		if (dist < bestDist) {
+	    			bestDist = dist;  
+	    			bestShip =  warpShipController.getControlledList().get(i);
 	           }
+	    	}
 	    }
-	    return bestShip;
+	    return (WarpShip) bestShip;
 	}
 	
 	public static List<Entity> getAllEntities() {
@@ -211,21 +216,21 @@ public class MainController {
 		return nearest;
 	}
 	
-	public static void createNewFighter(int xPos, int yPos) {
+	public static void createNewFighter(double xPos, double yPos) {
 		Fighter newFighter = new Fighter(xPos, yPos); 
 			
 		fighterController.add(newFighter);
 		GridController.addEntity(newFighter);
 	}	
 	
-	public static void createNewCarrier(int xPos, int yPos) {
+	public static void createNewCarrier(double xPos, double yPos) {
 		Carrier newCarrier = new Carrier(xPos, yPos); 
 		
 		carrierController.add(newCarrier);
 		GridController.addEntity(newCarrier);
 	}
 	
-	public static void createNewWarpShip(int xPos, int yPos) {
+	public static void createNewWarpShip(double xPos, double yPos) {
 		WarpShip newWarpShip = new WarpShip(xPos, yPos); 
 		
 		warpShipController.add(newWarpShip);

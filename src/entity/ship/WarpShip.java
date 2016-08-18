@@ -29,7 +29,7 @@ public class WarpShip  extends Ship implements Entity{
 	
 	private Warpgate warpgate;
 
-	public WarpShip(int xPos, int yPos) {
+	public WarpShip(double xPos, double yPos) {
 		
 		warpdrive = new Warpdrive(10, 300, .01, 80, this);
 		warpgate = new Warpgate(this);
@@ -48,7 +48,7 @@ public class WarpShip  extends Ship implements Entity{
 		this.health = this.maxHealth;
 		this.maxRotation = 30;
 		
-		this.desiredTargetDistance = 300;
+		this.desiredTargetDistance = 1500;
 
 		this.scale = 3;
 		this.age = 0;
@@ -72,9 +72,9 @@ public class WarpShip  extends Ship implements Entity{
 			this.targetYPos = target.getYPos() + (Math.random() * 100 - 50);
 			setTarget = true;
 		}
-		
 		if (deployed) {
 		} else {
+			System.out.println(desiredTargetDistance + " . " + totalDist);
 			if (this.desiredTargetDistance * .98 <= this.totalDist &&
 					this.desiredTargetDistance * 1.02 >= this.totalDist) {
 				this.deploy();

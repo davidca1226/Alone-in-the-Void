@@ -17,8 +17,8 @@ public class Warpgate {
 	
 	public void update() {
 		if (this.active = true) {
-			ParticleController.createParticleField(mount.getXPos(), mount.getYPos(), 5, 120,
-					120, 0, 180, Color.decode("#ADD8E6"), true);
+			ParticleController.createParticleField(mount.getXPos(), mount.getYPos(), 1, 60,
+					4, 0, 180, Color.blue, true);
 		}
 	}
 	

@@ -43,7 +43,6 @@ public class Utility {
 				  + 
 				  Math.pow((mintime*issuerYVelocity - mintime*targetYVelocity + issuerYPos - targetYPos), 2)
 				);
-		System.out.println(mintime + " . " + mindist);
 		
 		
 		

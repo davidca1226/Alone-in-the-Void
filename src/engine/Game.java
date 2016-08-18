@@ -61,7 +61,7 @@ public class Game extends JPanel implements Runnable{
 		station = new Station(25000, 25000);
 
 		mainController = new MainController(station);
-		mainController.createNewFighter(10, 10);
+		MainController.createNewFighter(100, 100);
 		Economy.Init(startCredits, interestAmount, interestPeriod);
 		
 		gui = new GuiController();
